@@ -36,58 +36,59 @@
             min-height: 100vh;
         }
 
-        /* Header */
-        .header {
+        /* Top bar — thin sticky strip: search + sidebar toggle only */
+        .topbar {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 0.6rem 1.2rem;
-            position: relative;
-            overflow: hidden;
+            padding: 0.5rem 1.2rem;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.8rem;
-        }
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30Z' fill='none' stroke='rgba(255,255,255,0.05)' stroke-width='1'/%3E%3C/svg%3E");
-            pointer-events: none;
-        }
-        .header-text { text-align: center; position: relative; }
-        .header h1 { font-size: 1.15rem; font-weight: 800; line-height: 1.3; }
-        .header p { font-size: 0.72rem; opacity: 0.8; }
-
-        /* Counter Bar */
-        .counter-bar {
-            background: var(--bg-card);
-            border-bottom: 2px solid var(--border);
-            padding: 0.8rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1.2rem;
-            flex-wrap: wrap;
             position: sticky;
             top: 0;
             z-index: 100;
             box-shadow: 0 2px 8px var(--shadow);
         }
+
+        /* Page body: left info rail + main content area */
+        .page-body { display: flex; align-items: flex-start; }
+
+        .info-rail {
+            width: 180px;
+            flex-shrink: 0;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.2rem 1rem;
+            min-height: calc(100vh - 52px);
+            position: sticky;
+            top: 52px;
+            box-shadow: 2px 0 8px var(--shadow);
+        }
+        .header-text { text-align: center; margin-bottom: 1.2rem; }
+        .header-text h1 { font-size: 1.05rem; font-weight: 800; line-height: 1.4; margin-bottom: 0.4rem; }
+        .header-text p { font-size: 0.7rem; opacity: 0.8; line-height: 1.4; }
+
+        .counter-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
         .counter-badge {
-            display: inline-flex;
+            display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 0.4rem;
-            padding: 0.4rem 1rem;
-            border-radius: 50px;
+            padding: 0.45rem 0.8rem;
+            border-radius: 10px;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.78rem;
         }
         .badge-total { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: var(--primary-dark); }
         .badge-done { background: #e8f8ef; color: var(--green); }
         .badge-partial { background: #fef5e7; color: var(--orange); }
         .badge-empty { background: #f0f0f0; color: var(--gray); }
-        .counter-badge .count { font-size: 1.1rem; font-weight: 800; }
+        .counter-badge .count { font-size: 0.95rem; font-weight: 800; }
 
         .search-box {
             flex: 1;
@@ -96,21 +97,22 @@
         }
         .search-box input {
             width: 100%;
-            padding: 0.5rem 1rem 0.5rem 2.2rem;
-            border: 2px solid var(--border);
+            padding: 0.4rem 1rem 0.4rem 2.2rem;
+            border: 2px solid transparent;
             border-radius: 50px;
             font-family: 'Cairo', sans-serif;
-            font-size: 0.9rem;
-            background: var(--bg);
-            color: var(--text);
+            font-size: 0.85rem;
+            background: rgba(255,255,255,0.15);
+            color: white;
             direction: rtl;
-            transition: border-color 0.3s;
+            transition: background 0.3s;
         }
-        .search-box input:focus { outline: none; border-color: var(--primary-light); }
-        .search-box .search-icon { position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%); color: var(--text-light); }
+        .search-box input::placeholder { color: rgba(255,255,255,0.7); }
+        .search-box input:focus { outline: none; background: rgba(255,255,255,0.25); }
+        .search-box .search-icon { position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.8); }
 
         /* Layout */
-        .main-container { display: flex; min-height: calc(100vh - 200px); position: relative; }
+        .main-container { display: flex; flex: 1; min-height: calc(100vh - 52px); position: relative; }
 
         /* Sidebar */
         .sidebar {
@@ -118,9 +120,9 @@
             background: var(--bg-sidebar);
             border-left: 2px solid var(--border);
             overflow-y: auto;
-            max-height: calc(100vh - 70px);
+            max-height: calc(100vh - 52px);
             position: sticky;
-            top: 70px;
+            top: 52px;
             flex-shrink: 0;
             transition: width 0.25s ease, min-width 0.25s ease, padding 0.25s ease, opacity 0.2s ease;
         }
@@ -340,21 +342,37 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            .header { padding: 0.5rem 0.8rem; gap: 0.5rem; }
-            .header h1 { font-size: 0.95rem; line-height: 1.3; }
-            .header p { font-size: 0.62rem; }
+            .topbar { padding: 0.45rem 0.7rem; gap: 0.5rem; }
             .sidebar-fab { font-size: 0.65rem; padding: 0.3rem 0.55rem; }
             .sidebar-fab .icon { font-size: 0.75rem; }
+            .search-box input { font-size: 16px; padding: 0.5rem 1rem 0.5rem 2.2rem; }
 
-            .counter-bar {
-                padding: 0.6rem 0.8rem;
-                gap: 0.5rem;
+            .page-body { flex-direction: column; }
+
+            .info-rail {
+                width: 100%;
+                min-height: 0;
+                position: relative;
+                top: 0;
+                padding: 0.7rem 0.8rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0.6rem;
                 flex-wrap: wrap;
             }
-            .counter-badge { font-size: 0.75rem; padding: 0.3rem 0.7rem; }
-            .counter-badge .count { font-size: 0.9rem; }
-            .search-box { max-width: 100%; flex-basis: 100%; order: 3; }
-            .search-box input { font-size: 16px; padding: 0.55rem 1rem 0.55rem 2.2rem; }
+            .header-text { text-align: right; margin-bottom: 0; flex: 1; min-width: 140px; }
+            .header-text h1 { font-size: 0.85rem; margin-bottom: 0.1rem; }
+            .header-text p { font-size: 0.6rem; }
+
+            .counter-bar {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.35rem;
+                justify-content: flex-end;
+            }
+            .counter-badge { font-size: 0.65rem; padding: 0.25rem 0.5rem; gap: 0.25rem; }
+            .counter-badge .count { font-size: 0.75rem; }
 
             .main-container { flex-direction: column; min-height: 0; }
 
@@ -410,8 +428,8 @@
         }
 
         @media (max-width: 420px) {
-            .header h1 { font-size: 0.85rem; }
-            .header p { display: none; }
+            .header-text h1 { font-size: 0.75rem; }
+            .header-text p { display: none; }
             .q-body { font-size: 0.9rem; }
         }
 
@@ -421,32 +439,36 @@
 </head>
 <body>
 
-<div class="header">
+<div class="topbar">
     <button class="sidebar-fab" id="sidebarFab">
         <span class="icon">📑</span>
         <span id="sidebarFabLabel">إخفاء الفهرس</span>
     </button>
-    <div class="header-text">
-        <h1>📜 100 سؤال في التاريخ</h1>
-        <p>أسئلة المحاضرات مرتبة ومنظمة حسب المحاور</p>
-    </div>
-</div>
-
-<div class="counter-bar">
-    <div class="counter-badge badge-total"><span>الإجمالي:</span> <span class="count" id="totalCount">100</span></div>
-    <div class="counter-badge badge-done">✅ مكتمل: <span class="count" id="doneCount">0</span></div>
-    <div class="counter-badge badge-partial">🔶 جزئي: <span class="count" id="partialCount">0</span></div>
-    <div class="counter-badge badge-empty">⬜ فارغ: <span class="count" id="emptyCount">0</span></div>
     <div class="search-box">
         <input type="text" id="searchInput" placeholder="ابحث في الأسئلة...">
         <span class="search-icon">🔍</span>
     </div>
 </div>
 
+<div class="page-body">
+<aside class="info-rail">
+    <div class="header-text">
+        <h1>📜 100 سؤال في التاريخ</h1>
+        <p>أسئلة المحاضرات مرتبة ومنظمة حسب المحاور</p>
+    </div>
+    <div class="counter-bar">
+        <div class="counter-badge badge-total"><span>الإجمالي:</span> <span class="count" id="totalCount">100</span></div>
+        <div class="counter-badge badge-done">✅ مكتمل: <span class="count" id="doneCount">0</span></div>
+        <div class="counter-badge badge-partial">🔶 جزئي: <span class="count" id="partialCount">0</span></div>
+        <div class="counter-badge badge-empty">⬜ فارغ: <span class="count" id="emptyCount">0</span></div>
+    </div>
+</aside>
+
 <div class="main-container">
 <aside class="sidebar" id="sidebar">
     <div id="sidebarBody"><!-- Sidebar generated by JS --></div>
 </aside>
+
 
 <main class="content-area" id="contentArea">
 
@@ -2102,6 +2124,7 @@
 
 <!-- ADD_HERE -->
 </main>
+</div>
 </div>
 
 <script>
